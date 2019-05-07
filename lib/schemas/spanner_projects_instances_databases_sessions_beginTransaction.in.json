@@ -1,0 +1,102 @@
+{
+    "type": "object",
+    "properties": {
+        "session": {
+            "required": true,
+            "type": "string"
+        },
+        "access_token": {
+            "type": "string"
+        },
+        "alt": {
+            "type": "string",
+            "enum": [
+                "json",
+                "media",
+                "proto"
+            ],
+            "default": "json"
+        },
+        "callback": {
+            "type": "string"
+        },
+        "fields": {
+            "type": "string"
+        },
+        "key": {
+            "type": "string"
+        },
+        "oauth_token": {
+            "type": "string"
+        },
+        "prettyPrint": {
+            "type": "boolean",
+            "default": true
+        },
+        "quotaUser": {
+            "type": "string"
+        },
+        "uploadType": {
+            "type": "string"
+        },
+        "upload_protocol": {
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "The request for BeginTransaction.",
+            "properties": {
+                "options": {
+                    "description": "Required. Options for the new transaction.",
+                    "properties": {
+                        "partitionedDml": {
+                            "description": "Partitioned DML transaction.\n\nAuthorization to begin a Partitioned DML transaction requires\n`spanner.databases.beginPartitionedDmlTransaction` permission\non the `session` resource.",
+                            "properties": {},
+                            "type": "object"
+                        },
+                        "readOnly": {
+                            "description": "Transaction will not write.\n\nAuthorization to begin a read-only transaction requires\n`spanner.databases.beginReadOnlyTransaction` permission\non the `session` resource.",
+                            "properties": {
+                                "exactStaleness": {
+                                    "description": "Executes all reads at a timestamp that is `exact_staleness`\nold. The timestamp is chosen soon after the read is started.\n\nGuarantees that all writes that have committed more than the\nspecified number of seconds ago are visible. Because Cloud Spanner\nchooses the exact timestamp, this mode works even if the client's\nlocal clock is substantially skewed from Cloud Spanner commit\ntimestamps.\n\nUseful for reading at nearby replicas without the distributed\ntimestamp negotiation overhead of `max_staleness`.",
+                                    "format": "google-duration",
+                                    "type": "string"
+                                },
+                                "maxStaleness": {
+                                    "description": "Read data at a timestamp >= `NOW - max_staleness`\nseconds. Guarantees that all writes that have committed more\nthan the specified number of seconds ago are visible. Because\nCloud Spanner chooses the exact timestamp, this mode works even if\nthe client's local clock is substantially skewed from Cloud Spanner\ncommit timestamps.\n\nUseful for reading the freshest data available at a nearby\nreplica, while bounding the possible staleness if the local\nreplica has fallen behind.\n\nNote that this option can only be used in single-use\ntransactions.",
+                                    "format": "google-duration",
+                                    "type": "string"
+                                },
+                                "minReadTimestamp": {
+                                    "description": "Executes all reads at a timestamp >= `min_read_timestamp`.\n\nThis is useful for requesting fresher data than some previous\nread, or data that is fresh enough to observe the effects of some\npreviously committed transaction whose timestamp is known.\n\nNote that this option can only be used in single-use transactions.\n\nA timestamp in RFC3339 UTC \\\"Zulu\\\" format, accurate to nanoseconds.\nExample: `\"2014-10-02T15:01:23.045123456Z\"`.",
+                                    "format": "google-datetime",
+                                    "type": "string"
+                                },
+                                "readTimestamp": {
+                                    "description": "Executes all reads at the given timestamp. Unlike other modes,\nreads at a specific timestamp are repeatable; the same read at\nthe same timestamp always returns the same data. If the\ntimestamp is in the future, the read will block until the\nspecified timestamp, modulo the read's deadline.\n\nUseful for large scale consistent reads such as mapreduces, or\nfor coordinating many reads against a consistent snapshot of the\ndata.\n\nA timestamp in RFC3339 UTC \\\"Zulu\\\" format, accurate to nanoseconds.\nExample: `\"2014-10-02T15:01:23.045123456Z\"`.",
+                                    "format": "google-datetime",
+                                    "type": "string"
+                                },
+                                "returnReadTimestamp": {
+                                    "description": "If true, the Cloud Spanner-selected read timestamp is included in\nthe Transaction message that describes the transaction.",
+                                    "type": "boolean"
+                                },
+                                "strong": {
+                                    "description": "Read at a timestamp where all previously committed transactions\nare visible.",
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "readWrite": {
+                            "description": "Transaction may write.\n\nAuthorization to begin a read-write transaction requires\n`spanner.databases.beginOrRollbackReadWriteTransaction` permission\non the `session` resource.",
+                            "properties": {},
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        }
+    }
+}

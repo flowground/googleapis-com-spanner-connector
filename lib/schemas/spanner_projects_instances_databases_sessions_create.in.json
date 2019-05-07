@@ -1,0 +1,79 @@
+{
+    "type": "object",
+    "properties": {
+        "database": {
+            "required": true,
+            "type": "string"
+        },
+        "access_token": {
+            "type": "string"
+        },
+        "alt": {
+            "type": "string",
+            "enum": [
+                "json",
+                "media",
+                "proto"
+            ],
+            "default": "json"
+        },
+        "callback": {
+            "type": "string"
+        },
+        "fields": {
+            "type": "string"
+        },
+        "key": {
+            "type": "string"
+        },
+        "oauth_token": {
+            "type": "string"
+        },
+        "prettyPrint": {
+            "type": "boolean",
+            "default": true
+        },
+        "quotaUser": {
+            "type": "string"
+        },
+        "uploadType": {
+            "type": "string"
+        },
+        "upload_protocol": {
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "The request for CreateSession.",
+            "properties": {
+                "session": {
+                    "description": "The session to create.",
+                    "properties": {
+                        "approximateLastUseTime": {
+                            "description": "Output only. The approximate timestamp when the session is last used. It is\ntypically earlier than the actual last use time.",
+                            "format": "google-datetime",
+                            "type": "string"
+                        },
+                        "createTime": {
+                            "description": "Output only. The timestamp when the session is created.",
+                            "format": "google-datetime",
+                            "type": "string"
+                        },
+                        "labels": {
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "description": "The labels for the session.\n\n * Label keys must be between 1 and 63 characters long and must conform to\n   the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.\n * Label values must be between 0 and 63 characters long and must conform\n   to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.\n * No more than 64 labels can be associated with a given session.\n\nSee https://goo.gl/xmQnxf for more information on and examples of labels.",
+                            "type": "object"
+                        },
+                        "name": {
+                            "description": "The name of the session. This is always system-assigned; values provided\nwhen creating a session are ignored.",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        }
+    }
+}

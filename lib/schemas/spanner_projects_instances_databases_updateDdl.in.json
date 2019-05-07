@@ -1,0 +1,63 @@
+{
+    "type": "object",
+    "properties": {
+        "database": {
+            "required": true,
+            "type": "string"
+        },
+        "access_token": {
+            "type": "string"
+        },
+        "alt": {
+            "type": "string",
+            "enum": [
+                "json",
+                "media",
+                "proto"
+            ],
+            "default": "json"
+        },
+        "callback": {
+            "type": "string"
+        },
+        "fields": {
+            "type": "string"
+        },
+        "key": {
+            "type": "string"
+        },
+        "oauth_token": {
+            "type": "string"
+        },
+        "prettyPrint": {
+            "type": "boolean",
+            "default": true
+        },
+        "quotaUser": {
+            "type": "string"
+        },
+        "uploadType": {
+            "type": "string"
+        },
+        "upload_protocol": {
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "Enqueues the given DDL statements to be applied, in order but not\nnecessarily all at once, to the database schema at some point (or\npoints) in the future. The server checks that the statements\nare executable (syntactically valid, name tables that exist, etc.)\nbefore enqueueing them, but they may still fail upon\nlater execution (e.g., if a statement from another batch of\nstatements is applied first and it conflicts in some way, or if\nthere is some data-related problem like a `NULL` value in a column to\nwhich `NOT NULL` would be added). If a statement fails, all\nsubsequent statements in the batch are automatically cancelled.\n\nEach batch of statements is assigned a name which can be used with\nthe Operations API to monitor\nprogress. See the\noperation_id field for more\ndetails.",
+            "properties": {
+                "operationId": {
+                    "description": "If empty, the new update request is assigned an\nautomatically-generated operation ID. Otherwise, `operation_id`\nis used to construct the name of the resulting\nOperation.\n\nSpecifying an explicit operation ID simplifies determining\nwhether the statements were executed in the event that the\nUpdateDatabaseDdl call is replayed,\nor the return value is otherwise lost: the database and\n`operation_id` fields can be combined to form the\nname of the resulting\nlongrunning.Operation: `<database>/operations/<operation_id>`.\n\n`operation_id` should be unique within the database, and must be\na valid identifier: `a-z*`. Note that\nautomatically-generated operation IDs always begin with an\nunderscore. If the named operation already exists,\nUpdateDatabaseDdl returns\n`ALREADY_EXISTS`.",
+                    "type": "string"
+                },
+                "statements": {
+                    "description": "DDL statements to be applied to the database.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        }
+    }
+}

@@ -1,0 +1,275 @@
+{
+    "type": "object",
+    "properties": {
+        "session": {
+            "required": true,
+            "type": "string"
+        },
+        "access_token": {
+            "type": "string"
+        },
+        "alt": {
+            "type": "string",
+            "enum": [
+                "json",
+                "media",
+                "proto"
+            ],
+            "default": "json"
+        },
+        "callback": {
+            "type": "string"
+        },
+        "fields": {
+            "type": "string"
+        },
+        "key": {
+            "type": "string"
+        },
+        "oauth_token": {
+            "type": "string"
+        },
+        "prettyPrint": {
+            "type": "boolean",
+            "default": true
+        },
+        "quotaUser": {
+            "type": "string"
+        },
+        "uploadType": {
+            "type": "string"
+        },
+        "upload_protocol": {
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "The request for Commit.",
+            "properties": {
+                "mutations": {
+                    "description": "The mutations to be executed when this transaction commits. All\nmutations are applied atomically, in the order they appear in\nthis list.",
+                    "items": {
+                        "description": "A modification to one or more Cloud Spanner rows.  Mutations can be\napplied to a Cloud Spanner database by sending them in a\nCommit call.",
+                        "properties": {
+                            "delete": {
+                                "description": "Delete rows from a table. Succeeds whether or not the named\nrows were present.",
+                                "properties": {
+                                    "keySet": {
+                                        "description": "Required. The primary keys of the rows within table to delete.\nDelete is idempotent. The transaction will succeed even if some or all\nrows do not exist.",
+                                        "properties": {
+                                            "all": {
+                                                "description": "For convenience `all` can be set to `true` to indicate that this\n`KeySet` matches all keys in the table or index. Note that any keys\nspecified in `keys` or `ranges` are only yielded once.",
+                                                "type": "boolean"
+                                            },
+                                            "keys": {
+                                                "description": "A list of specific keys. Entries in `keys` should have exactly as\nmany elements as there are columns in the primary or index key\nwith which this `KeySet` is used.  Individual key values are\nencoded as described here.",
+                                                "items": {
+                                                    "items": {},
+                                                    "type": "array"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "ranges": {
+                                                "description": "A list of key ranges. See KeyRange for more information about\nkey range specifications.",
+                                                "items": {
+                                                    "description": "KeyRange represents a range of rows in a table or index.\n\nA range has a start key and an end key. These keys can be open or\nclosed, indicating if the range includes rows with that key.\n\nKeys are represented by lists, where the ith value in the list\ncorresponds to the ith component of the table or index primary key.\nIndividual values are encoded as described here.\n\nFor example, consider the following table definition:\n\n    CREATE TABLE UserEvents (\n      UserName STRING(MAX),\n      EventDate STRING(10)\n    ) PRIMARY KEY(UserName, EventDate);\n\nThe following keys name rows in this table:\n\n    \"Bob\", \"2014-09-23\"\n\nSince the `UserEvents` table's `PRIMARY KEY` clause names two\ncolumns, each `UserEvents` key has two elements; the first is the\n`UserName`, and the second is the `EventDate`.\n\nKey ranges with multiple components are interpreted\nlexicographically by component using the table or index key's declared\nsort order. For example, the following range returns all events for\nuser `\"Bob\"` that occurred in the year 2015:\n\n    \"start_closed\": [\"Bob\", \"2015-01-01\"]\n    \"end_closed\": [\"Bob\", \"2015-12-31\"]\n\nStart and end keys can omit trailing key components. This affects the\ninclusion and exclusion of rows that exactly match the provided key\ncomponents: if the key is closed, then rows that exactly match the\nprovided components are included; if the key is open, then rows\nthat exactly match are not included.\n\nFor example, the following range includes all events for `\"Bob\"` that\noccurred during and after the year 2000:\n\n    \"start_closed\": [\"Bob\", \"2000-01-01\"]\n    \"end_closed\": [\"Bob\"]\n\nThe next example retrieves all events for `\"Bob\"`:\n\n    \"start_closed\": [\"Bob\"]\n    \"end_closed\": [\"Bob\"]\n\nTo retrieve events before the year 2000:\n\n    \"start_closed\": [\"Bob\"]\n    \"end_open\": [\"Bob\", \"2000-01-01\"]\n\nThe following range includes all rows in the table:\n\n    \"start_closed\": []\n    \"end_closed\": []\n\nThis range returns all users whose `UserName` begins with any\ncharacter from A to C:\n\n    \"start_closed\": [\"A\"]\n    \"end_open\": [\"D\"]\n\nThis range returns all users whose `UserName` begins with B:\n\n    \"start_closed\": [\"B\"]\n    \"end_open\": [\"C\"]\n\nKey ranges honor column sort order. For example, suppose a table is\ndefined as follows:\n\n    CREATE TABLE DescendingSortedTable {\n      Key INT64,\n      ...\n    ) PRIMARY KEY(Key DESC);\n\nThe following range retrieves all rows with key values between 1\nand 100 inclusive:\n\n    \"start_closed\": [\"100\"]\n    \"end_closed\": [\"1\"]\n\nNote that 100 is passed as the start, and 1 is passed as the end,\nbecause `Key` is a descending column in the schema.",
+                                                    "properties": {
+                                                        "endClosed": {
+                                                            "description": "If the end is closed, then the range includes all rows whose\nfirst `len(end_closed)` key columns exactly match `end_closed`.",
+                                                            "items": {},
+                                                            "type": "array"
+                                                        },
+                                                        "endOpen": {
+                                                            "description": "If the end is open, then the range excludes rows whose first\n`len(end_open)` key columns exactly match `end_open`.",
+                                                            "items": {},
+                                                            "type": "array"
+                                                        },
+                                                        "startClosed": {
+                                                            "description": "If the start is closed, then the range includes all rows whose\nfirst `len(start_closed)` key columns exactly match `start_closed`.",
+                                                            "items": {},
+                                                            "type": "array"
+                                                        },
+                                                        "startOpen": {
+                                                            "description": "If the start is open, then the range excludes rows whose first\n`len(start_open)` key columns exactly match `start_open`.",
+                                                            "items": {},
+                                                            "type": "array"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "table": {
+                                        "description": "Required. The table whose rows will be deleted.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "insert": {
+                                "description": "Insert new rows in a table. If any of the rows already exist,\nthe write or transaction fails with error `ALREADY_EXISTS`.",
+                                "properties": {
+                                    "columns": {
+                                        "description": "The names of the columns in table to be written.\n\nThe list of columns must contain enough columns to allow\nCloud Spanner to derive values for all primary key columns in the\nrow(s) to be modified.",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "table": {
+                                        "description": "Required. The table whose rows will be written.",
+                                        "type": "string"
+                                    },
+                                    "values": {
+                                        "description": "The values to be written. `values` can contain more than one\nlist of values. If it does, then multiple rows are written, one\nfor each entry in `values`. Each list in `values` must have\nexactly as many entries as there are entries in columns\nabove. Sending multiple lists is equivalent to sending multiple\n`Mutation`s, each containing one `values` entry and repeating\ntable and columns. Individual values in each list are\nencoded as described here.",
+                                        "items": {
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "insertOrUpdate": {
+                                "description": "Like insert, except that if the row already exists, then\nits column values are overwritten with the ones provided. Any\ncolumn values not explicitly written are preserved.",
+                                "properties": {
+                                    "columns": {
+                                        "description": "The names of the columns in table to be written.\n\nThe list of columns must contain enough columns to allow\nCloud Spanner to derive values for all primary key columns in the\nrow(s) to be modified.",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "table": {
+                                        "description": "Required. The table whose rows will be written.",
+                                        "type": "string"
+                                    },
+                                    "values": {
+                                        "description": "The values to be written. `values` can contain more than one\nlist of values. If it does, then multiple rows are written, one\nfor each entry in `values`. Each list in `values` must have\nexactly as many entries as there are entries in columns\nabove. Sending multiple lists is equivalent to sending multiple\n`Mutation`s, each containing one `values` entry and repeating\ntable and columns. Individual values in each list are\nencoded as described here.",
+                                        "items": {
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "replace": {
+                                "description": "Like insert, except that if the row already exists, it is\ndeleted, and the column values provided are inserted\ninstead. Unlike insert_or_update, this means any values not\nexplicitly written become `NULL`.",
+                                "properties": {
+                                    "columns": {
+                                        "description": "The names of the columns in table to be written.\n\nThe list of columns must contain enough columns to allow\nCloud Spanner to derive values for all primary key columns in the\nrow(s) to be modified.",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "table": {
+                                        "description": "Required. The table whose rows will be written.",
+                                        "type": "string"
+                                    },
+                                    "values": {
+                                        "description": "The values to be written. `values` can contain more than one\nlist of values. If it does, then multiple rows are written, one\nfor each entry in `values`. Each list in `values` must have\nexactly as many entries as there are entries in columns\nabove. Sending multiple lists is equivalent to sending multiple\n`Mutation`s, each containing one `values` entry and repeating\ntable and columns. Individual values in each list are\nencoded as described here.",
+                                        "items": {
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "update": {
+                                "description": "Update existing rows in a table. If any of the rows does not\nalready exist, the transaction fails with error `NOT_FOUND`.",
+                                "properties": {
+                                    "columns": {
+                                        "description": "The names of the columns in table to be written.\n\nThe list of columns must contain enough columns to allow\nCloud Spanner to derive values for all primary key columns in the\nrow(s) to be modified.",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "table": {
+                                        "description": "Required. The table whose rows will be written.",
+                                        "type": "string"
+                                    },
+                                    "values": {
+                                        "description": "The values to be written. `values` can contain more than one\nlist of values. If it does, then multiple rows are written, one\nfor each entry in `values`. Each list in `values` must have\nexactly as many entries as there are entries in columns\nabove. Sending multiple lists is equivalent to sending multiple\n`Mutation`s, each containing one `values` entry and repeating\ntable and columns. Individual values in each list are\nencoded as described here.",
+                                        "items": {
+                                            "items": {},
+                                            "type": "array"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "singleUseTransaction": {
+                    "description": "Execute mutations in a temporary transaction. Note that unlike\ncommit of a previously-started transaction, commit with a\ntemporary transaction is non-idempotent. That is, if the\n`CommitRequest` is sent to Cloud Spanner more than once (for\ninstance, due to retries in the application, or in the\ntransport library), it is possible that the mutations are\nexecuted more than once. If this is undesirable, use\nBeginTransaction and\nCommit instead.",
+                    "properties": {
+                        "partitionedDml": {
+                            "description": "Partitioned DML transaction.\n\nAuthorization to begin a Partitioned DML transaction requires\n`spanner.databases.beginPartitionedDmlTransaction` permission\non the `session` resource.",
+                            "properties": {},
+                            "type": "object"
+                        },
+                        "readOnly": {
+                            "description": "Transaction will not write.\n\nAuthorization to begin a read-only transaction requires\n`spanner.databases.beginReadOnlyTransaction` permission\non the `session` resource.",
+                            "properties": {
+                                "exactStaleness": {
+                                    "description": "Executes all reads at a timestamp that is `exact_staleness`\nold. The timestamp is chosen soon after the read is started.\n\nGuarantees that all writes that have committed more than the\nspecified number of seconds ago are visible. Because Cloud Spanner\nchooses the exact timestamp, this mode works even if the client's\nlocal clock is substantially skewed from Cloud Spanner commit\ntimestamps.\n\nUseful for reading at nearby replicas without the distributed\ntimestamp negotiation overhead of `max_staleness`.",
+                                    "format": "google-duration",
+                                    "type": "string"
+                                },
+                                "maxStaleness": {
+                                    "description": "Read data at a timestamp >= `NOW - max_staleness`\nseconds. Guarantees that all writes that have committed more\nthan the specified number of seconds ago are visible. Because\nCloud Spanner chooses the exact timestamp, this mode works even if\nthe client's local clock is substantially skewed from Cloud Spanner\ncommit timestamps.\n\nUseful for reading the freshest data available at a nearby\nreplica, while bounding the possible staleness if the local\nreplica has fallen behind.\n\nNote that this option can only be used in single-use\ntransactions.",
+                                    "format": "google-duration",
+                                    "type": "string"
+                                },
+                                "minReadTimestamp": {
+                                    "description": "Executes all reads at a timestamp >= `min_read_timestamp`.\n\nThis is useful for requesting fresher data than some previous\nread, or data that is fresh enough to observe the effects of some\npreviously committed transaction whose timestamp is known.\n\nNote that this option can only be used in single-use transactions.\n\nA timestamp in RFC3339 UTC \\\"Zulu\\\" format, accurate to nanoseconds.\nExample: `\"2014-10-02T15:01:23.045123456Z\"`.",
+                                    "format": "google-datetime",
+                                    "type": "string"
+                                },
+                                "readTimestamp": {
+                                    "description": "Executes all reads at the given timestamp. Unlike other modes,\nreads at a specific timestamp are repeatable; the same read at\nthe same timestamp always returns the same data. If the\ntimestamp is in the future, the read will block until the\nspecified timestamp, modulo the read's deadline.\n\nUseful for large scale consistent reads such as mapreduces, or\nfor coordinating many reads against a consistent snapshot of the\ndata.\n\nA timestamp in RFC3339 UTC \\\"Zulu\\\" format, accurate to nanoseconds.\nExample: `\"2014-10-02T15:01:23.045123456Z\"`.",
+                                    "format": "google-datetime",
+                                    "type": "string"
+                                },
+                                "returnReadTimestamp": {
+                                    "description": "If true, the Cloud Spanner-selected read timestamp is included in\nthe Transaction message that describes the transaction.",
+                                    "type": "boolean"
+                                },
+                                "strong": {
+                                    "description": "Read at a timestamp where all previously committed transactions\nare visible.",
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "readWrite": {
+                            "description": "Transaction may write.\n\nAuthorization to begin a read-write transaction requires\n`spanner.databases.beginOrRollbackReadWriteTransaction` permission\non the `session` resource.",
+                            "properties": {},
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                },
+                "transactionId": {
+                    "description": "Commit a previously-started transaction.",
+                    "format": "byte",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    }
+}
